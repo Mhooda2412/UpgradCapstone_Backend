@@ -27,17 +27,17 @@ import java.util.UUID;
 public class CustomerController {
 
     @Autowired
-    CustomerService customerService;
+    CustomerService customer_service;
 
     @Autowired
-    private PasswordCryptographyProvider passwordCryptographyProvider;
+    private PasswordCryptographyProvider pwd_crypt;
 
     /*
      * This endpoint is used to signing up a new user in the FoodOrderingAppBackend.
      * input - contains body with details like
-     * First Name, Last Name, Email id, password, contact No.
+     * First Name, Last Name, Email id, password, contact number.
      * output - Success - SignupUserResponse containing created user detail with its uuid
-     *          Failure - Failure Code  with message.
+     *          Failure - Failure Code
      */
     @RequestMapping(
             method = RequestMethod.POST,
@@ -50,43 +50,41 @@ public class CustomerController {
 
         if (signupCustomerRequest.getFirstName() == null ||
                 signupCustomerRequest.getFirstName().isEmpty() ||
+                signupCustomerRequest.getPassword() == null ||
+                signupCustomerRequest.getPassword().isEmpty() ||
                 signupCustomerRequest.getEmailAddress() == null ||
                 signupCustomerRequest.getEmailAddress().isEmpty() ||
                 signupCustomerRequest.getContactNumber() == null ||
-                signupCustomerRequest.getContactNumber().isEmpty() ||
-                signupCustomerRequest.getPassword() == null ||
-                signupCustomerRequest.getPassword().isEmpty()) {
+                signupCustomerRequest.getContactNumber().isEmpty() ) {
             throw new SignUpRestrictedException("SGR-005", "Except last name all fields should be filled.");
         }
 
-        //create a new CustomerEntity Object
+        //create an object for CustomerEntity
         CustomerEntity customerEntity = new CustomerEntity();
 
-        //create a new random unique uuid and set it to new Customer Entity
+        //create a new random unique uuid and set it to new CustomerEntity
         customerEntity.setUuid(UUID.randomUUID().toString());
 
-        //Set All the field of new object from the Request
+        //setting all the fields from the Request
         customerEntity.setFirstName(signupCustomerRequest.getFirstName());
         customerEntity.setLastName(signupCustomerRequest.getLastName());
+        customerEntity.setPassword(signupCustomerRequest.getPassword());
         customerEntity.setEmail(signupCustomerRequest.getEmailAddress());
         customerEntity.setContactNumber(signupCustomerRequest.getContactNumber());
-        customerEntity.setPassword(signupCustomerRequest.getPassword());
 
         //Call CustomerService to create a new customer Entity
-        CustomerEntity createdCustmerEntity = customerService.saveCustomer(customerEntity);
+        CustomerEntity ce = customer_service.saveCustomer(customerEntity);
 
-        //create response with create customer uuid
-        SignupCustomerResponse signupCustomerResponse = new SignupCustomerResponse().id(createdCustmerEntity.getUuid()).status("CUSTOMER SUCCESSFULLY REGISTERED");
-
+        //creating response with customer uuid
+        SignupCustomerResponse signupCustomerResponse = new SignupCustomerResponse().id(ce.getUuid()).status("CUSTOMER SUCCESSFULLY REGISTERED");
         return new ResponseEntity<SignupCustomerResponse>(signupCustomerResponse, HttpStatus.CREATED);
-
     }
 
     /*
      * This endpoint is used to login user in the FoodOrderingAppBackend.
      * input - authorization field containing Basic + Base64 Encoded String of "username(phonenumber):password"
      * output - Success - Auth Token with user uuid
-     *          Failure - Failure Code  with message.
+     *          Failure - Failure Code
      */
     @RequestMapping(
             method = RequestMethod.POST,
@@ -100,7 +98,7 @@ public class CustomerController {
         //split and extract authorization base 64 code string from "authorization" field
         String[] base64EncodedString = authorization.split("Basic ");
 
-        //decode base64 string from a "authorization" field
+        //decode base64 string from "authorization" field
         if (base64EncodedString.length != 2) {
             throw new AuthenticationFailedException("ATH-003", "Incorrect format of decoded customer name and password");
         }
@@ -108,15 +106,15 @@ public class CustomerController {
 
         String decodedString = new String(decodedArray);
 
-        //decoded string contain username(contact number) and password separated by ":"
+        //decoded string containing username(phonenumber) and password separated by ":"
         String[] decodedUserNamePassword = decodedString.split(":");
 
         if (decodedUserNamePassword.length != 2) {
             throw new AuthenticationFailedException("ATH-003", "Incorrect format of decoded customer name and password");
         }
 
-        //get CustomerEntity from Auth Token
-        CustomerAuthEntity customerAuthEntity = customerService.authenticate(decodedUserNamePassword[0], decodedUserNamePassword[1]);
+        //get CustomerEntity from Authentication Token
+        CustomerAuthEntity customerAuthEntity = customer_service.authenticate(decodedUserNamePassword[0], decodedUserNamePassword[1]);
 
         //send response with customer uuid and access token in HttpHeader
         LoginResponse loginResponse = new LoginResponse()
@@ -132,16 +130,14 @@ public class CustomerController {
         List<String> header = new ArrayList<>();
         header.add("access-token");
         headers.setAccessControlExposeHeaders(header);
-
         return new ResponseEntity<LoginResponse>(loginResponse, headers, HttpStatus.OK);
-
     }
 
     /*
      * This endpoint is used to logout user from the FoodOrderingAppBackend.
      * input - Bearer + authorization field containing access token generated from user sign-in
      * output - Success - with message
-     *          Failure - Failure Code  with message.
+     *          Failure - Failure Code
      */
     @RequestMapping(
             method = RequestMethod.POST,
@@ -151,10 +147,10 @@ public class CustomerController {
     public ResponseEntity<LogoutResponse> logout(@RequestHeader("authorization") final String authorization)
             throws AuthorizationFailedException {
 
-        CustomerAuthEntity customerAuthEntity = customerService.logout(Utility.getTokenFromAuthorizationField(authorization));
+        CustomerAuthEntity customer_auth_entity = customer_service.logout(Utility.getTokenFromAuthorizationField(authorization));
 
         //create response with logoutResponse customer uuid
-        LogoutResponse logoutResponse = new LogoutResponse().id(customerAuthEntity.getCustomer().getUuid()).message("SIGNED OUT SUCCESSFULLY");
+        LogoutResponse logoutResponse = new LogoutResponse().id(customer_auth_entity.getCustomer().getUuid()).message("SIGNED OUT SUCCESSFULLY");
         HttpHeaders headers = new HttpHeaders();
         return new ResponseEntity<LogoutResponse>(logoutResponse, headers, HttpStatus.OK);
 
@@ -165,7 +161,7 @@ public class CustomerController {
      * input - Bearer + authorization field containing access token generated from user sign-in as header
      * and the body containing details like first name and last name
      * output - Success - with message
-     *          Failure - Failure Code  with message.
+     *          Failure - Failure Code
      */
     @RequestMapping(
             method = RequestMethod.PUT,
@@ -183,16 +179,16 @@ public class CustomerController {
         }
 
         // Call authenticationService with access token came in authorization field.
-        CustomerEntity customerEntity = customerService.getCustomer(Utility.getTokenFromAuthorizationField(authorization));
+        CustomerEntity customer_entity = customer_service.getCustomer(Utility.getTokenFromAuthorizationField(authorization));
 
-        customerEntity.setFirstName(updateCustomerRequest.getFirstName());
+        customer_entity.setFirstName(updateCustomerRequest.getFirstName());
 
         if (updateCustomerRequest.getLastName() != null &&
                 !updateCustomerRequest.getLastName().isEmpty()) {
-            customerEntity.setLastName(updateCustomerRequest.getLastName());
+            customer_entity.setLastName(updateCustomerRequest.getLastName());
         }
 
-        CustomerEntity updatedcustomerEntity = customerService.updateCustomer(customerEntity);
+        CustomerEntity updatedcustomerEntity = customer_service.updateCustomer(customer_entity);
 
         //create response with create customer uuid
         UpdateCustomerResponse updateCustomerResponse = new UpdateCustomerResponse()
@@ -209,7 +205,7 @@ public class CustomerController {
      * input - Bearer + authorization field containing access token generated from user sign-in as header
      * and the body containing details like old password and new password
      * output - Success - with message
-     *          Failure - Failure Code with message.
+     *          Failure - Failure Code
      */
     @RequestMapping(
             method = RequestMethod.PUT,
@@ -229,14 +225,13 @@ public class CustomerController {
         }
 
         // Call authenticationService with access token came in authorization field.
-        CustomerEntity customerEntity = customerService.getCustomer(Utility.getTokenFromAuthorizationField(authorization));
+        CustomerEntity customer_entity = customer_service.getCustomer(Utility.getTokenFromAuthorizationField(authorization));
 
-        customerService.updateCustomerPassword(updatePasswordRequest.getOldPassword(), updatePasswordRequest.getNewPassword(), customerEntity);
+        customer_service.updateCustomerPassword(updatePasswordRequest.getOldPassword(), updatePasswordRequest.getNewPassword(), customer_entity);
 
         //create response with create customer uuid
-        UpdatePasswordResponse updatePasswordResponse = new UpdatePasswordResponse().id(customerEntity.getUuid()).status("CUSTOMER PASSWORD UPDATED SUCCESSFULLY");
+        UpdatePasswordResponse updatePasswordResponse = new UpdatePasswordResponse().id(customer_entity.getUuid()).status("CUSTOMER PASSWORD UPDATED SUCCESSFULLY");
 
         return new ResponseEntity<UpdatePasswordResponse>(updatePasswordResponse, HttpStatus.OK);
     }
 }
-
