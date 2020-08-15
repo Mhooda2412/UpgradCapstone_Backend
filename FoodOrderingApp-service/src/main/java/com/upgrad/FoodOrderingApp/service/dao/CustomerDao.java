@@ -40,5 +40,16 @@ public class CustomerDao {
         }
         return updateCustomerEntity;
     }
+
+
+    public CustomerEntity getCustomerByUuid(final String uuid){
+        try{
+            return entityManager.createNamedQuery("customerByUuid",CustomerEntity.class).setParameter("uuid",uuid).getSingleResult();
+        }catch (NoResultException e){
+            return null;
+        }
+    }
+
+
 }
 
