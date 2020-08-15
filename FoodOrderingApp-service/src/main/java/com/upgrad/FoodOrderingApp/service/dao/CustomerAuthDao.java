@@ -4,7 +4,6 @@ import com.upgrad.FoodOrderingApp.service.entity.CustomerAuthEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
@@ -14,14 +13,14 @@ public class CustomerAuthDao {
 
 
     @PersistenceContext
-    private EntityManager entityManager;
+    private EntityManager em;
 
     @Transactional(propagation = Propagation.REQUIRED)
+
     public CustomerAuthEntity createAuthToken(final CustomerAuthEntity customerAuthEntity) {
         try {
-            entityManager.persist(customerAuthEntity);
+            em.persist(customerAuthEntity);
         } catch (Exception e) {
-            System.out.println(".....................Database Error");
             e.printStackTrace();
         }
         return customerAuthEntity;
@@ -29,9 +28,8 @@ public class CustomerAuthDao {
 
     public CustomerAuthEntity updateAuthToken(final CustomerAuthEntity customerAuthEntity) {
         try {
-            entityManager.merge(customerAuthEntity);
+            em.merge(customerAuthEntity);
         } catch (Exception e) {
-            System.out.println(".....................Database Error");
             e.printStackTrace();
         }
         return customerAuthEntity;
@@ -39,16 +37,12 @@ public class CustomerAuthDao {
 
     public CustomerAuthEntity getAuthTokenEntityByAccessToken(final String accessToken) {
         try {
-            return entityManager.createNamedQuery("customerAuthTokenByAccessToken", CustomerAuthEntity.class).setParameter("accessToken", accessToken).getSingleResult();
+            return em.createNamedQuery("customerAuthTokenByAccessToken", CustomerAuthEntity.class).setParameter("accessToken", accessToken).getSingleResult();
         } catch (NoResultException nre) {
             return null;
         } catch (Exception e) {
-            System.out.println(".....................Database Error");
             e.printStackTrace();
             return null;
         }
     }
-
-
 }
-

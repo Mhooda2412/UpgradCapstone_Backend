@@ -14,15 +14,14 @@ import java.util.List;
 public class AddressDao {
 
     @PersistenceContext
-    private EntityManager entityManager;
+    private EntityManager em;
 
     public CustomerAddressEntity getAddressByUUID(String addressUuid, String customerUuid) {
         try {
-            return entityManager.createNamedQuery("getCustomerAddressByUUID", CustomerAddressEntity.class).setParameter("addressUuid", addressUuid).getSingleResult();
+            return em.createNamedQuery("getCustomerAddressByUUID", CustomerAddressEntity.class).setParameter("addressUuid", addressUuid).getSingleResult();
         } catch (NoResultException nre) {
             return null;
         } catch (Exception e) {
-            System.out.println(".....................Database Error");
             e.printStackTrace();
             return null;
         }
@@ -30,11 +29,10 @@ public class AddressDao {
 
     public List<CustomerAddressEntity> getAllCustomerAddress(CustomerEntity customer) {
         try {
-            return entityManager.createNamedQuery("getAllCustomerAddress", CustomerAddressEntity.class).setParameter("customer", customer).getResultList();
+            return em.createNamedQuery("getAllCustomerAddress", CustomerAddressEntity.class).setParameter("customer", customer).getResultList();
         } catch (NoResultException nre) {
             return null;
         } catch (Exception e) {
-            System.out.println(".....................Database Error");
             e.printStackTrace();
             return null;
         }
@@ -42,10 +40,9 @@ public class AddressDao {
 
     public AddressEntity saveAddress(CustomerAddressEntity customerAddressEntity) {
         try {
-            entityManager.persist(customerAddressEntity.getAddress());
-            entityManager.persist(customerAddressEntity);
+            em.persist(customerAddressEntity.getAddress());
+            em.persist(customerAddressEntity);
         } catch (Exception e) {
-            System.out.println(".....................Database Error");
             e.printStackTrace();
         }
         return customerAddressEntity.getAddress();
@@ -53,12 +50,10 @@ public class AddressDao {
 
     public AddressEntity deleteAddress(AddressEntity addressEntity) {
         try {
-            entityManager.remove(addressEntity);
+            em.remove(addressEntity);
         } catch (Exception e) {
-            System.out.println(".....................Database Error");
             e.printStackTrace();
         }
         return addressEntity;
     }
-
 }

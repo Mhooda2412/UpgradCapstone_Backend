@@ -3,14 +3,12 @@ package com.upgrad.FoodOrderingApp.service.entity;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
 
 @Entity
 @Table(name = "customer", schema = "public")
@@ -39,7 +37,6 @@ public class CustomerEntity implements Serializable {
     @Column(name = "email")
     @Size(max = 50)
     private String email;
-
 
     @Column(name = "contact_number", unique = true)
     @NotNull
