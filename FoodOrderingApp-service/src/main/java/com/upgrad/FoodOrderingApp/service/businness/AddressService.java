@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,10 +20,10 @@ import java.util.List;
 public class AddressService {
 
     @Autowired
-    private StateDao stateDao;
+    private StateDao state_dao;
 
     @Autowired
-    private AddressDao addressDao;
+    private AddressDao address_dao;
 
     @Transactional(propagation = Propagation.REQUIRED)
     public AddressEntity saveAddress(AddressEntity addressEntity, CustomerEntity customerEntity) throws SaveAddressException {
@@ -42,12 +41,12 @@ public class AddressService {
             throw new SaveAddressException("SAR-001", "No field can be empty.");
         }
 
-        CustomerAddressEntity customerAddressEntity = new CustomerAddressEntity();
-        customerAddressEntity.setAddress(addressEntity);
-        customerAddressEntity.setCustomer(customerEntity);
+        CustomerAddressEntity customer_address_entity = new CustomerAddressEntity();
+        customer_address_entity.setAddress(addressEntity);
+        customer_address_entity.setCustomer(customerEntity);
 
         try {
-            return addressDao.saveAddress(customerAddressEntity);
+            return address_dao.saveAddress(customer_address_entity);
         } catch (Exception e) {
             throw new SaveAddressException("ADR-000", "Unknown database error while saving Address");
         }
@@ -55,11 +54,11 @@ public class AddressService {
 
     @Transactional(propagation = Propagation.REQUIRED)
     public AddressEntity deleteAddress(AddressEntity addressEntity) {
-        return addressDao.deleteAddress(addressEntity);
+        return address_dao.deleteAddress(addressEntity);
     }
 
     public AddressEntity getAddressByUUID(String uuid, CustomerEntity customerEntity) throws AuthorizationFailedException, AddressNotFoundException {
-        CustomerAddressEntity customerAddressEntity = addressDao.getAddressByUUID(uuid, customerEntity.getUuid());
+        CustomerAddressEntity customerAddressEntity = address_dao.getAddressByUUID(uuid, customerEntity.getUuid());
         if (customerAddressEntity == null) {
             throw new AddressNotFoundException("ANF-003", "No address by this id");
         } else if (customerAddressEntity.getCustomer() != customerEntity) {
@@ -70,23 +69,20 @@ public class AddressService {
     }
 
     public List<AddressEntity> getAllAddress(CustomerEntity customerEntity) {
-
-        List<CustomerAddressEntity> listCustomerAddressEntity = addressDao.getAllCustomerAddress(customerEntity);
+        List<CustomerAddressEntity> listCustomerAddressEntity = address_dao.getAllCustomerAddress(customerEntity);
         List<AddressEntity> listAddressEntity = new ArrayList<>();
         for (CustomerAddressEntity ca : listCustomerAddressEntity) {
             listAddressEntity.add(ca.getAddress());
         }
-
         return listAddressEntity;
     }
 
     public List<StateEntity> getAllStates() {
-        return stateDao.getAllState();
+        return state_dao.getAllState();
     }
-
     public StateEntity getStateByUUID(String uuid) throws AddressNotFoundException {
         try {
-            return stateDao.getStateByUuid(uuid);
+            return state_dao.getStateByUuid(uuid);
         } catch (Exception e) {
             throw new AddressNotFoundException("ANF-002", "No state by this id.");
         }
