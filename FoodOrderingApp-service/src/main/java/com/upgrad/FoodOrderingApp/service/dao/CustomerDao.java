@@ -2,7 +2,6 @@ package com.upgrad.FoodOrderingApp.service.dao;
 
 import com.upgrad.FoodOrderingApp.service.entity.CustomerEntity;
 import org.springframework.stereotype.Repository;
-
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
@@ -11,13 +10,12 @@ import javax.persistence.PersistenceContext;
 public class CustomerDao {
 
     @PersistenceContext
-    private EntityManager entityManager;
+    private EntityManager em;
 
     public CustomerEntity createCustomer(CustomerEntity customerEntity) {
         try {
-            entityManager.persist(customerEntity);
+            em.persist(customerEntity);
         } catch (Exception e) {
-            System.out.println(".....................Database Error");
             e.printStackTrace();
         }
         return customerEntity;
@@ -25,11 +23,10 @@ public class CustomerDao {
 
     public CustomerEntity getUserByContactNumber(String contactNumber) {
         try {
-            return entityManager.createNamedQuery("customerByContactNumber", CustomerEntity.class).setParameter("contactNumber", contactNumber).getSingleResult();
+            return em.createNamedQuery("customerByContactNumber", CustomerEntity.class).setParameter("contactNumber", contactNumber).getSingleResult();
         } catch (NoResultException nre) {
             return null;
         } catch (Exception e) {
-            System.out.println(".....................Database Error");
             e.printStackTrace();
             return null;
         }
@@ -37,12 +34,13 @@ public class CustomerDao {
 
     public CustomerEntity updateCustomer(final CustomerEntity updateCustomerEntity) {
         try {
-            entityManager.merge(updateCustomerEntity);
+            em.merge(updateCustomerEntity);
         } catch (Exception e) {
-            System.out.println(".....................Database Error");
+            e.printStackTrace();
         }
         return updateCustomerEntity;
     }
+
 
     public CustomerEntity getCustomerByUuid(final String uuid){
         try{
@@ -51,6 +49,7 @@ public class CustomerDao {
             return null;
         }
     }
+
 
 }
 

@@ -3,28 +3,28 @@ package com.upgrad.FoodOrderingApp.service.entity;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "customer_address", schema = "public")
+@Table(name = "category_item", schema = "public")
 @NamedQueries({
-        @NamedQuery(name = "getCustomerAddressByUUID", query = "select ca from CustomerAddressEntity ca where ca.address.uuid =:addressUuid"),
-        @NamedQuery(name = "getAllCustomerAddress", query = "select ca from CustomerAddressEntity ca where ca.customer =:customer")
+        @NamedQuery(name = "getCategoryItemEntityByCategoryUuid", query = "select ci from CategoryItemEntity ci where ci.category.uuid =:uuid")
 })
-public class CustomerAddressEntity implements Serializable {
+public class CategoryItemEntity implements Serializable {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "address_id")
-    private AddressEntity address;
+    @JoinColumn(name = "item_id")
+    private ItemEntity item;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "customer_id")
-    private CustomerEntity customer;
+    @JoinColumn(name = "category_id")
+    private CategoryEntity category;
 
     public long getId() {
         return id;
@@ -34,20 +34,20 @@ public class CustomerAddressEntity implements Serializable {
         this.id = id;
     }
 
-    public AddressEntity getAddress() {
-        return address;
+    public ItemEntity getItem() {
+        return item;
     }
 
-    public void setAddress(AddressEntity address) {
-        this.address = address;
+    public void setItem(ItemEntity item) {
+        this.item = item;
     }
 
-    public CustomerEntity getCustomer() {
-        return customer;
+    public CategoryEntity getCategory() {
+        return category;
     }
 
-    public void setCustomer(CustomerEntity customer) {
-        this.customer = customer;
+    public void setCategory(CategoryEntity category) {
+        this.category = category;
     }
 
     @Override
