@@ -22,12 +22,14 @@ public class OrderItemEntity implements Serializable {
     @JoinColumn(name = "order_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     @NotNull
-    private OrdersEntity order;
+    private OrderEntity order;
+
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "item_id")
     @NotNull
     private ItemEntity item;
+
 
     @Column(name = "quantity")
     @NotNull
@@ -45,11 +47,11 @@ public class OrderItemEntity implements Serializable {
         this.id = id;
     }
 
-    public OrdersEntity getOrder() {
+    public OrderEntity getOrder() {
         return order;
     }
 
-    public void setOrder(OrdersEntity order) {
+    public void setOrder(OrderEntity order) {
         this.order = order;
     }
 
@@ -69,6 +71,7 @@ public class OrderItemEntity implements Serializable {
         this.price = price;
     }
 
+
     public ItemEntity getItem() {
         return item;
     }
@@ -76,4 +79,5 @@ public class OrderItemEntity implements Serializable {
     public void setItem(ItemEntity item) {
         this.item = item;
     }
+
 }

@@ -7,8 +7,10 @@ import java.io.Serializable;
 
 
 @NamedQueries({
+
         @NamedQuery(name = "getCouponByCouponName", query = "SELECT c FROM CouponEntity c WHERE c.couponName = :coupon_name"),
         @NamedQuery(name = "getCouponByCouponId",query = "SELECT c FROM  CouponEntity c WHERE c.uuid = :uuid")
+
 })
 @Entity
 @Table(name = "coupon", uniqueConstraints = {@UniqueConstraint(columnNames = {"uuid"})})
@@ -30,6 +32,18 @@ public class CouponEntity implements Serializable {
     @Column(name = "percent")
     @NotNull
     private Integer percent;
+
+//    constructors for test case
+
+    public CouponEntity(){
+
+    }
+
+    public CouponEntity(String couponId, String myCoupon, int percent) {
+        this.uuid = couponId;
+        this.couponName = myCoupon;
+        this.percent = percent;
+    }
 
     public Integer getId() {
         return id;

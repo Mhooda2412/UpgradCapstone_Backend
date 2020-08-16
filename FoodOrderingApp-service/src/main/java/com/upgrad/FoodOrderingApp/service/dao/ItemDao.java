@@ -25,7 +25,8 @@ public class ItemDao {
         }
     }
 
-    public List<ItemEntity> getItemsByPopularity(Long restaurantId) {
+    public List<ItemEntity> getItemsByPopularity(Integer restaurantId) {
+
         try {
             List<ItemEntity> listItemEntity = entityManager.createNamedQuery("getItemsByPopularity", ItemEntity.class).setParameter("restaurantId", restaurantId).getResultList();
             List<ItemEntity> subListItemEntity = new ArrayList<>();

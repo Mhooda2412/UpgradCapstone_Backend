@@ -150,7 +150,9 @@ public class RestaurantControllerTest {
     @Test
     public void shouldNotGetRestaurantByNameIfNameIsEmpty() throws Exception {
         when(mockRestaurantService.restaurantsByName(anyString()))
-                .thenThrow(new RestaurantNotFoundException("RNF-003", "Restaurant name field should not be empty"));
+
+                .thenThrow(new RestaurantNotFoundException("RNF-003", "Restaurant name field should not be empty"));
+
 
         mockMvc
                 .perform(get("/restaurant/name/emptyString").contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))

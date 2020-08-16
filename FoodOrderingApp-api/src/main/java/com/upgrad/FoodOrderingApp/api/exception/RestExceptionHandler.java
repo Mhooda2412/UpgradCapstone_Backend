@@ -22,6 +22,7 @@ public class RestExceptionHandler {
                 HttpStatus.BAD_REQUEST);
     }
 
+
     @ExceptionHandler(AuthorizationFailedException.class)
     public ResponseEntity<ErrorResponse> authorizationFailedException(AuthorizationFailedException exc ,WebRequest request) {
         return new ResponseEntity<ErrorResponse>(new ErrorResponse()
@@ -29,6 +30,7 @@ public class RestExceptionHandler {
                 .message(exc.getErrorMessage()),
                 HttpStatus.FORBIDDEN);
     }
+
 
     @ExceptionHandler(UpdateCustomerException.class)
     public ResponseEntity<ErrorResponse> updateCustomerException (UpdateCustomerException exc,WebRequest request){
@@ -65,6 +67,7 @@ public class RestExceptionHandler {
 
     }
 
+
     @ExceptionHandler(CouponNotFoundException.class)
     public ResponseEntity<ErrorResponse> couponNotFoundException(CouponNotFoundException exc ,WebRequest request) {
 
@@ -73,6 +76,7 @@ public class RestExceptionHandler {
                 .message(exc.getErrorMessage()),
                 HttpStatus.NOT_FOUND);
     }
+
 
     @ExceptionHandler(ItemNotFoundException.class)
     public ResponseEntity<ErrorResponse> itemNotFoundException(ItemNotFoundException exc ,WebRequest request) {
