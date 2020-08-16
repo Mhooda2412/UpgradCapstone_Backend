@@ -11,9 +11,11 @@ import com.upgrad.FoodOrderingApp.service.entity.OrdersEntity;
 import com.upgrad.FoodOrderingApp.service.exception.CouponNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import org.springframework.transaction.annotation.Propagation;
 
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
 @Service
@@ -59,6 +61,7 @@ public class OrderService {
         return orderItemEntities;
     }
 
+
     /* This method is to get Coupon By CouponId.Takes the couponUuid  and returns the Coupon Entity.
     If error throws exception with error code and error message.
     */
@@ -94,5 +97,6 @@ public class OrderService {
         OrderItemEntity savedOrderItemEntity = orderItemDao.saveOrderItem(orderItemEntity);
         return savedOrderItemEntity;
     }
+
 
 }

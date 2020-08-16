@@ -21,6 +21,7 @@ public class CouponDao {
         }
     }
 
+
     //To get Coupon By Coupon Id from the db
     public CouponEntity getCouponByCouponId(String couponUuid) {
         try {
@@ -30,4 +31,5 @@ public class CouponDao {
             return null;
         }
     }
+
 }

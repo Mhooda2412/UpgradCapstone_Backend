@@ -1,6 +1,7 @@
 package com.upgrad.FoodOrderingApp.api.controller;
 
 import com.upgrad.FoodOrderingApp.api.model.*;
+
 import com.upgrad.FoodOrderingApp.service.businness.AddressService;
 import com.upgrad.FoodOrderingApp.service.businness.CustomerService;
 import com.upgrad.FoodOrderingApp.service.businness.OrderService;
@@ -10,6 +11,7 @@ import com.upgrad.FoodOrderingApp.service.exception.AddressNotFoundException;
 import com.upgrad.FoodOrderingApp.service.exception.AuthorizationFailedException;
 import com.upgrad.FoodOrderingApp.service.exception.CouponNotFoundException;
 import com.upgrad.FoodOrderingApp.service.exception.PaymentMethodNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -17,13 +19,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+
 import java.sql.Timestamp;;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
 @CrossOrigin(allowedHeaders = "*", origins = "*", exposedHeaders = ("access-token"))
+
 @RestController("/")
+
 public class OrderController {
     @Autowired
     OrderService orderService;
@@ -48,6 +54,9 @@ public class OrderController {
     public ResponseEntity<CouponDetailsResponse> getCouponByCouponName(@RequestHeader(value = "authorization") final String authorization, @PathVariable(value = "coupon_name") final String couponName) throws AuthorizationFailedException, CouponNotFoundException {
         String[] accessToken = authorization.split("Bearer ");
         if (accessToken.length < 2) {
+
+
+   
             throw new AuthorizationFailedException("ATHR-001", "Customer is not Logged in");
         }
 
@@ -66,6 +75,7 @@ public class OrderController {
     }
 
 
+
     /* The method handles past order request of customer.It takes authorization from the header
     & produces response in CustomerOrderResponse and returns details of all the past order arranged in date wise and if error returns error code and error Message.
     */
@@ -75,17 +85,22 @@ public class OrderController {
     public ResponseEntity<CustomerOrderResponse> getPastOrderOfUser(@RequestHeader(value = "authorization") final String authorization) throws AuthorizationFailedException {
         String[] accessToken = authorization.split("Bearer ");
         if (accessToken.length < 2) {
+
             throw new AuthorizationFailedException("ATHR-001", "Customer is not Logged in");
         }
         CustomerEntity customerEntity = customerService.getCustomer(accessToken[1]);
         //Calls getOrdersByCustomers of orderService to get all the past orders of the customer.
+
         List<OrdersEntity> ordersEntities = orderService.getOrdersByCustomers(customerEntity.getUuid());
+
 
         //Creating List of OrderList
         List<OrderList> orderLists = new LinkedList<>();
 
+
         if (ordersEntities != null) {  //Checking if orderentities is null if yes them empty list is returned
             for (OrdersEntity ordersEntity : ordersEntities) {
+
                 //Calls getOrderItemsByOrder by order of orderService get all the items ordered in past by orders.
                 List<OrderItemEntity> orderItemEntities = orderService.getOrderItemsByOrder(ordersEntity);
                 //Creating ItemQuantitiesResponse List
@@ -93,10 +108,12 @@ public class OrderController {
                 orderItemEntities.forEach(orderItemEntity -> {
                     //Creating new ItemQuantityResponseItem
                     ItemQuantityResponseItem itemQuantityResponseItem = new ItemQuantityResponseItem()
+
                             .itemName(orderItemEntity.getItem().getItemName())
                             .itemPrice(orderItemEntity.getItem().getPrice())
                             .id(UUID.fromString(orderItemEntity.getItem().getUuid()))
                             .type(ItemQuantityResponseItem.TypeEnum.valueOf(orderItemEntity.getItem().getType().toString()));
+
                     //Creating ItemQuantityResponse which will be added to the list
                     ItemQuantityResponse itemQuantityResponse = new ItemQuantityResponse()
                             .item(itemQuantityResponseItem)
@@ -154,6 +171,7 @@ public class OrderController {
             }
             CustomerOrderResponse customerOrderResponse = new CustomerOrderResponse()
                     .orders(orderLists);
+
             return new ResponseEntity<CustomerOrderResponse>(customerOrderResponse, HttpStatus.OK);
         } else {
             return new ResponseEntity<CustomerOrderResponse>(new CustomerOrderResponse(), HttpStatus.OK);//If no order created by customer empty array is returned.
@@ -227,3 +245,4 @@ public class OrderController {
 
     }
 }
+

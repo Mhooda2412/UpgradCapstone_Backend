@@ -7,8 +7,10 @@ import java.io.Serializable;
 
 
 @NamedQueries({
+
         @NamedQuery(name = "getCouponByCouponName", query = "SELECT c FROM CouponEntity c WHERE c.couponName = :coupon_name"),
         @NamedQuery(name = "getCouponByCouponId",query = "SELECT c FROM  CouponEntity c WHERE c.uuid = :uuid")
+
 })
 @Entity
 @Table(name = "coupon", uniqueConstraints = {@UniqueConstraint(columnNames = {"uuid"})})
