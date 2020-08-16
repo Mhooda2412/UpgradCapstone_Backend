@@ -7,7 +7,7 @@ import com.upgrad.FoodOrderingApp.service.dao.OrdersDao;
 import com.upgrad.FoodOrderingApp.service.entity.CouponEntity;
 import com.upgrad.FoodOrderingApp.service.entity.CustomerEntity;
 import com.upgrad.FoodOrderingApp.service.entity.OrderItemEntity;
-import com.upgrad.FoodOrderingApp.service.entity.OrdersEntity;
+import com.upgrad.FoodOrderingApp.service.entity.OrderEntity;
 import com.upgrad.FoodOrderingApp.service.exception.CouponNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,7 +46,7 @@ public class OrderService {
        /* This method is to get Orders By Customers.Takes the customerUuid  and returns the list of OrdersEntity .
         If error throws exception with error code and error message.
         */
-    public List<OrdersEntity>getOrdersByCustomers(String customerUuid){
+    public List<OrderEntity>getOrdersByCustomers(String customerUuid){
         CustomerEntity customerEntity = customerDao.getCustomerByUuid(customerUuid);
         return ordersDao.getOrdersByCustomers(customerEntity);
     }
@@ -54,10 +54,10 @@ public class OrderService {
     /* This method is to get Order Items By Order.Takes the ordersEntity  and returns the list of OrderItemEntity .
     If error throws exception with error code and error message.
     */
-    public List<OrderItemEntity> getOrderItemsByOrder(OrdersEntity ordersEntity) {
+    public List<OrderItemEntity> getOrderItemsByOrder(OrderEntity orderEntity) {
 
         //Calls getOrderItemsByOrder of orderItemDao to return list of OrderItemEntity corresponding to the order.
-        List<OrderItemEntity> orderItemEntities = orderItemDao.getOrderItemsByOrder(ordersEntity);
+        List<OrderItemEntity> orderItemEntities = orderItemDao.getOrderItemsByOrder(orderEntity);
         return orderItemEntities;
     }
 
@@ -79,10 +79,10 @@ public class OrderService {
     If error throws exception with error code and error message.
     */
     @Transactional(propagation = Propagation.REQUIRED)
-    public OrdersEntity saveOrder(OrdersEntity ordersEntity) {
+    public OrderEntity saveOrder(OrderEntity orderEntity) {
 
         //Calls saveOrder of orderDao to save the Order entity.
-        OrdersEntity savedOrderEntity = ordersDao.saveOrder(ordersEntity);
+        OrderEntity savedOrderEntity = ordersDao.saveOrder(orderEntity);
         return savedOrderEntity;
 
     }

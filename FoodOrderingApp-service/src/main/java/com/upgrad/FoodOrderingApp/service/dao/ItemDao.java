@@ -25,24 +25,24 @@ public class ItemDao {
         }
     }
 
-//    public List<ItemEntity> getItemsByPopularity(Long restaurantId) {
-//        try {
-//            List<ItemEntity> listItemEntity = entityManager.createNamedQuery("getItemsByPopularity", ItemEntity.class).setParameter("restaurantId", restaurantId).getResultList();
-//            List<ItemEntity> subListItemEntity = new ArrayList<>();
-//            int listSize = listItemEntity.size();
-//            if (listSize > 5 ) {
-//                subListItemEntity.addAll(listItemEntity.subList(0, 5));
-//            } else {
-//                subListItemEntity = listItemEntity;
-//            }
-//            return subListItemEntity;
-//        } catch (NoResultException nre) {
-//            return null;
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return null;
-//        }
-//    }
+    public List<ItemEntity> getItemsByPopularity(Integer restaurantId) {
+        try {
+            List<ItemEntity> listItemEntity = entityManager.createNamedQuery("getItemsByPopularity", ItemEntity.class).setParameter("restaurantId", restaurantId).getResultList();
+            List<ItemEntity> subListItemEntity = new ArrayList<>();
+            int listSize = listItemEntity.size();
+            if (listSize > 5 ) {
+                subListItemEntity.addAll(listItemEntity.subList(0, 5));
+            } else {
+                subListItemEntity = listItemEntity;
+            }
+            return subListItemEntity;
+        } catch (NoResultException nre) {
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     public ItemEntity getItemsByUuid(String uuid) {
         try {
