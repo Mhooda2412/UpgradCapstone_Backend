@@ -16,6 +16,10 @@ import java.util.List;
 @NamedQueries({
         @NamedQuery(name = "getAllCategoriesOrderedByName", query = "select c from CategoryEntity c order by c.categoryName"),
         @NamedQuery(name = "getCategoryById", query = "select c from CategoryEntity c where c.uuid =:uuid"),
+        @NamedQuery(name = "getAllCategoryById" , query = "select c from CategoryEntity c  " +
+                "INNER JOIN RestaurantCategoryEntity rc on c.id = rc.category " +
+                "INNER JOIN RestaurantEntity r on rc.restaurant = r.id Where r.uuid =:uuid order by c.categoryName"),
+
 })
 public class CategoryEntity implements Serializable {
     @Id
