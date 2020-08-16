@@ -50,8 +50,8 @@ public class RestaurantService {
     If error throws exception with error code and error message.
     */
     public List<RestaurantEntity> restaurantsByName(String restaurantName)throws RestaurantNotFoundException{
-        if(restaurantName == null || restaurantName ==""){ //Checking for restaunrant name to be null or empty to throw exception.
-            throw new RestaurantNotFoundException("RNF-003","Restaurant name field should not be empty");
+        if(restaurantName == null || restaurantName.isEmpty()){ //Checking for restaunrant name to be null or empty to throw exception.
+            throw new RestaurantNotFoundException("RNF-003", "Restaurant name field should not be empty");
         }
 
         //Calls restaurantsByName of restaurantDao to get list of RestaurantEntity
@@ -65,7 +65,7 @@ public class RestaurantService {
      */
     public List<RestaurantEntity> restaurantByCategory(String categoryId) throws CategoryNotFoundException {
 
-        if(categoryId == null || categoryId == ""){ //Checking for categoryId to be null or empty to throw exception.
+        if(categoryId == null || categoryId.isEmpty()){ //Checking for categoryId to be null or empty to throw exception.
             throw new CategoryNotFoundException("CNF-001","Category id field should not be empty");
         }
 
@@ -92,7 +92,7 @@ public class RestaurantService {
      If error throws exception with error code and error message.
      */
     public RestaurantEntity restaurantByUUID(String restaurantUuid)throws RestaurantNotFoundException{
-        if(restaurantUuid == null||restaurantUuid == ""){ //Checking for restaurantUuid to be null or empty to throw exception.
+        if(restaurantUuid == null||restaurantUuid.isEmpty()){ //Checking for restaurantUuid to be null or empty to throw exception.
             throw new RestaurantNotFoundException("RNF-002","Restaurant id field should not be empty");
         }
 
