@@ -1,9 +1,11 @@
 package com.upgrad.FoodOrderingApp.service.businness;
 
 import com.upgrad.FoodOrderingApp.service.dao.CategoryDao;
+
 import com.upgrad.FoodOrderingApp.service.dao.RestaurantCategoryDao;
 import com.upgrad.FoodOrderingApp.service.dao.RestaurantDao;
 import com.upgrad.FoodOrderingApp.service.entity.*;
+
 //import com.upgrad.FoodOrderingApp.service.entity.RestaurantCategoryEntity;
 import com.upgrad.FoodOrderingApp.service.exception.CategoryNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,7 @@ public class CategoryService {
 
     @Autowired
     private CategoryDao categoryDao;
+
 
     @Autowired
     private RestaurantDao restaurantDao;
@@ -40,6 +43,7 @@ public class CategoryService {
         return categoryEntities;
     }
 
+
     public CategoryEntity getCategoryById(String categoryId) throws CategoryNotFoundException {
 
         if (categoryId == null || categoryId.isEmpty()) {
@@ -55,7 +59,7 @@ public class CategoryService {
         //Disabling this code because Unit test are written differently
         //categoryEntity.setCategoryItem(listCategoryItemEntity);
 
-        // { TODO: Remove This code if Test CategoryControllerTest.java:shouldGetCategoryById() is fixed
+       //  { TODO: Remove This code if Test CategoryControllerTest.java:shouldGetCategoryById() is fixed
         List<ItemEntity> listItemEntity = new ArrayList<>();
         for (CategoryItemEntity ci : listCategoryItemEntity) {
             listItemEntity.add(ci.getItem());

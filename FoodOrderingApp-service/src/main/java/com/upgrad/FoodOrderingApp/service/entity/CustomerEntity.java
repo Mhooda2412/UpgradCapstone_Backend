@@ -13,7 +13,8 @@ import java.util.List;
 @Entity
 @Table(name = "customer", schema = "public")
 @NamedQueries({
-        @NamedQuery(name = "customerByContactNumber", query = "select c from CustomerEntity c where c.contactNumber = :contactNumber")
+        @NamedQuery(name = "customerByContactNumber", query = "select c from CustomerEntity c where c.contactNumber = :contactNumber"),
+        @NamedQuery(name = "customerByUuid", query = "SELECT c from CustomerEntity c where c.uuid = :uuid")
 })
 public class CustomerEntity implements Serializable {
     @Id
