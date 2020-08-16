@@ -43,8 +43,8 @@ public class CategoryEntity implements Serializable {
     @OneToMany(mappedBy = "category", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<CategoryItemEntity> categoryItem = new ArrayList<>();
 
-//    @OneToMany(mappedBy = "category", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
-//    private List<RestaurantCategoryEntity> restaurantCategory = new ArrayList<>();
+    @OneToMany(mappedBy = "category", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private List<RestaurantCategoryEntity> restaurantCategory = new ArrayList<>();
 
     public long getId() {
         return id;
@@ -86,13 +86,13 @@ public class CategoryEntity implements Serializable {
         this.categoryItem = categoryItem;
     }
 
-//    public List<RestaurantCategoryEntity> getRestaurantCategory() {
-//        return restaurantCategory;
-//    }
-//
-//    public void setRestaurantCategory(List<RestaurantCategoryEntity> restaurantCategory) {
-//        this.restaurantCategory = restaurantCategory;
-//    }
+    public List<RestaurantCategoryEntity> getRestaurantCategory() {
+        return restaurantCategory;
+    }
+
+    public void setRestaurantCategory(List<RestaurantCategoryEntity> restaurantCategory) {
+        this.restaurantCategory = restaurantCategory;
+    }
 
     @Override
     public boolean equals(Object obj) {
