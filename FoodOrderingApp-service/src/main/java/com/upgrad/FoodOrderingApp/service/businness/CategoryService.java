@@ -4,7 +4,7 @@ import com.upgrad.FoodOrderingApp.service.dao.CategoryDao;
 import com.upgrad.FoodOrderingApp.service.entity.CategoryEntity;
 import com.upgrad.FoodOrderingApp.service.entity.CategoryItemEntity;
 import com.upgrad.FoodOrderingApp.service.entity.ItemEntity;
-import com.upgrad.FoodOrderingApp.service.entity.RestaurantCategoryEntity;
+//import com.upgrad.FoodOrderingApp.service.entity.RestaurantCategoryEntity;
 import com.upgrad.FoodOrderingApp.service.exception.CategoryNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,14 +18,14 @@ public class CategoryService {
     @Autowired
     private CategoryDao categoryDao;
 
-    public List<CategoryEntity> getCategoriesByRestaurant(String restaurantId) {
-        List<RestaurantCategoryEntity> listRestaurantCategoryEntity = categoryDao.getCategoriesByRestaurant(restaurantId);
-        List<CategoryEntity> listCategoryEntity = new ArrayList<>();
-        for (RestaurantCategoryEntity rc : listRestaurantCategoryEntity) {
-            listCategoryEntity.add(rc.getCategory());
-        }
-        return listCategoryEntity;
-    }
+//    public List<CategoryEntity> getCategoriesByRestaurant(String restaurantId) {
+//        List<RestaurantCategoryEntity> listRestaurantCategoryEntity = categoryDao.getCategoriesByRestaurant(restaurantId);
+//        List<CategoryEntity> listCategoryEntity = new ArrayList<>();
+//        for (RestaurantCategoryEntity rc : listRestaurantCategoryEntity) {
+//            listCategoryEntity.add(rc.getCategory());
+//        }
+//        return listCategoryEntity;
+//    }
 
     public CategoryEntity getCategoryById(String categoryId) throws CategoryNotFoundException {
 
@@ -42,7 +42,7 @@ public class CategoryService {
         //Disabling this code because Unit test are written differently
         //categoryEntity.setCategoryItem(listCategoryItemEntity);
 
-        // { TODO: Remove This code if Test CategoryControllerTest.java:shouldGetCategoryById() is fixed
+       //  { TODO: Remove This code if Test CategoryControllerTest.java:shouldGetCategoryById() is fixed
         List<ItemEntity> listItemEntity = new ArrayList<>();
         for (CategoryItemEntity ci : listCategoryItemEntity) {
             listItemEntity.add(ci.getItem());
