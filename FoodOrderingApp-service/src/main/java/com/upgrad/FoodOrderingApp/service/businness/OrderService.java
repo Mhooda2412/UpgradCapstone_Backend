@@ -12,6 +12,10 @@ import com.upgrad.FoodOrderingApp.service.exception.CouponNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import org.springframework.transaction.annotation.Propagation;
+
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
 @Service
@@ -56,4 +60,43 @@ public class OrderService {
         List<OrderItemEntity> orderItemEntities = orderItemDao.getOrderItemsByOrder(ordersEntity);
         return orderItemEntities;
     }
+
+
+    /* This method is to get Coupon By CouponId.Takes the couponUuid  and returns the Coupon Entity.
+    If error throws exception with error code and error message.
+    */
+    public CouponEntity getCouponByCouponId(String couponUuid) throws CouponNotFoundException {
+
+        //Calls getCouponByCouponId method of CouponDao to get coupon entity
+        CouponEntity couponEntity = couponDao.getCouponByCouponId(couponUuid);
+        if(couponEntity == null){   //Checking if couponEntity is Null
+            throw new CouponNotFoundException("CPF-002","No coupon by this id");
+        }
+        return couponEntity;
+    }
+
+    /* This method is to saveOrder.Takes the OrdersEntity  and saves it to DB and returns saved the Coupon Entity.
+    If error throws exception with error code and error message.
+    */
+    @Transactional(propagation = Propagation.REQUIRED)
+    public OrdersEntity saveOrder(OrdersEntity ordersEntity) {
+
+        //Calls saveOrder of orderDao to save the Order entity.
+        OrdersEntity savedOrderEntity = ordersDao.saveOrder(ordersEntity);
+        return savedOrderEntity;
+
+    }
+
+    /* This method is to saveOrderItem.Takes the orderItemEntity  and saves it to DB and returns saved the OrderItemEntity.
+   If error throws exception with error code and error message.
+   */
+    @Transactional(propagation = Propagation.REQUIRED)
+    public OrderItemEntity saveOrderItem (OrderItemEntity orderItemEntity){
+
+        //Calls saveOrderItem of orderItemDao to save the OrderItemEntity.
+        OrderItemEntity savedOrderItemEntity = orderItemDao.saveOrderItem(orderItemEntity);
+        return savedOrderItemEntity;
+    }
+
+
 }
