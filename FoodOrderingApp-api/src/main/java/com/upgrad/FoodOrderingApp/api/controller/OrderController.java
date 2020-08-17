@@ -53,7 +53,6 @@ public class OrderController {
         if (accessToken.length < 2) {
 
 
-   
             throw new AuthorizationFailedException("ATHR-001", "Customer is not Logged in");
         }
 
@@ -223,7 +222,7 @@ public class OrderController {
 
             OrderItemEntity orderItemEntity = new OrderItemEntity();
 
-           ItemEntity itemEntity = itemService.getItemByUUID(itemQuantity.getItemId().toString());
+            ItemEntity itemEntity = itemService.getItemByUUID(itemQuantity.getItemId().toString());
 
             orderItemEntity.setItem(itemEntity);
             orderItemEntity.setOrder(orderEntity);

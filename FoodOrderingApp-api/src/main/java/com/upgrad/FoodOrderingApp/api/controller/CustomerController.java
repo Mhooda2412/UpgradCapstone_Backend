@@ -55,7 +55,7 @@ public class CustomerController {
                 signupCustomerRequest.getEmailAddress() == null ||
                 signupCustomerRequest.getEmailAddress().isEmpty() ||
                 signupCustomerRequest.getContactNumber() == null ||
-                signupCustomerRequest.getContactNumber().isEmpty() ) {
+                signupCustomerRequest.getContactNumber().isEmpty()) {
             throw new SignUpRestrictedException("SGR-005", "Except last name all fields should be filled.");
         }
 
