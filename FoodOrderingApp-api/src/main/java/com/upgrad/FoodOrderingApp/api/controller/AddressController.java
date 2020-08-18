@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -31,15 +32,15 @@ public class AddressController {
     private AddressService address_service;
 
     /*
-    * This endpoint is used to save address in the FoodOrderingAppBackend.
-    * input - authorization field containing Bearer + access token generated from user sign-in
-    * input - SaveAddressRequest contain all user details like flat_building_name,
-    * locality, city, pincode, state_uuid
-    * Note: take the state_uuid from GET /state and pick the corresponding UUID and pass like
-    * "state_uuid": "5485eb18-a23b-11e8-9077-720006ceb890" --> for karnataka
-    * output - Success - SaveAddressResponse containing created address detail with its uuid
-    *           Failure - Failure Code
-    */
+     * This endpoint is used to save address in the FoodOrderingAppBackend.
+     * input - authorization field containing Bearer + access token generated from user sign-in
+     * input - SaveAddressRequest contain all user details like flat_building_name,
+     * locality, city, pincode, state_uuid
+     * Note: take the state_uuid from GET /state and pick the corresponding UUID and pass like
+     * "state_uuid": "5485eb18-a23b-11e8-9077-720006ceb890" --> for karnataka
+     * output - Success - SaveAddressResponse containing created address detail with its uuid
+     *           Failure - Failure Code
+     */
     @RequestMapping(
             method = RequestMethod.POST,
             path = "/address",
@@ -71,7 +72,7 @@ public class AddressController {
 
         return new ResponseEntity<SaveAddressResponse>(saveAddressResponse, HttpStatus.CREATED);
     }
-    
+
     /*
      * This endpoint is used to get all address of a customer who is signed in for the FoodOrderingAppBackend.
      * input - authorization field containing Bearer + access token generated from user sign-in

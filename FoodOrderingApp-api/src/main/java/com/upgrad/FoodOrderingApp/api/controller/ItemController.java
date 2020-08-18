@@ -29,6 +29,9 @@ public class ItemController {
     @Autowired
     private ItemService itemService;
 
+    /*
+        Get Items by Restaurant Id
+     */
     @RequestMapping(
             method = RequestMethod.GET,
             path = "/item/restaurant/{restaurant_id}",
@@ -37,8 +40,10 @@ public class ItemController {
             @PathVariable("restaurant_id") final String restaurantId)
             throws RestaurantNotFoundException {
 
+        //Get Restaurant using Restaurant Id
         RestaurantEntity restaurantEntity = restaurantService.restaurantByUUID(restaurantId);
 
+        //Getting Item using Restaurant Entity
         List<ItemEntity> listItemEntity = itemService.getItemsByPopularity(restaurantEntity);
 
         ArrayList<ItemList> listItemList = new ArrayList<>();
@@ -51,6 +56,8 @@ public class ItemController {
 
         ItemListResponse itemListResponse = new ItemListResponse();
         itemListResponse.addAll(0, listItemList);
+
+        //Returning ItemListResponse
         return new ResponseEntity<ItemListResponse>(itemListResponse, HttpStatus.OK);
     }
 

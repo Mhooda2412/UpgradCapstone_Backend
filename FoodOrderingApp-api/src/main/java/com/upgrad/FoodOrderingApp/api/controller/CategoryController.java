@@ -30,16 +30,21 @@ public class CategoryController {
     @Autowired
     private ItemService itemService;
 
+    /*
+        Get all categories Order by Name.
+    */
     @RequestMapping(
             method = RequestMethod.GET,
             path = "/category",
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<CategoriesListResponse> getAllCategoriesOrderedByName() {
 
+        //Get all categories using serive method
         List<CategoryEntity> listCategoryEntity = categoryService.getAllCategoriesOrderedByName();
 
         List<CategoryListResponse> listCategoryListResponse = null;
 
+        //Converting Category objects to CategoryListResponse
         if (listCategoryEntity.size() != 0) {
 
             listCategoryListResponse = new ArrayList<>();
@@ -52,9 +57,13 @@ public class CategoryController {
         }
 
         CategoriesListResponse categoriesListResponse = new CategoriesListResponse().categories(listCategoryListResponse);
+        //returning CategoryListResponse
         return new ResponseEntity<>(categoriesListResponse, HttpStatus.OK);
     }
 
+    /*
+        Get Category by Id
+     */
     @RequestMapping(
             method = RequestMethod.GET,
             path = "/category/{category_id}",
@@ -63,10 +72,12 @@ public class CategoryController {
             @PathVariable("category_id") final String categoryId)
             throws CategoryNotFoundException {
 
+        //Category id is null or empty throw CategoryNotFoundException
         if (categoryId == null || categoryId.isEmpty()) {
             throw new CategoryNotFoundException("CNF-001", "Category id field should not be empty");
         }
 
+        //getting category using category id
         CategoryEntity categoryEntity = categoryService.getCategoryById(categoryId);
 
         List<ItemList> listItemList = new ArrayList<ItemList>();
@@ -83,6 +94,7 @@ public class CategoryController {
                 .categoryName(categoryEntity.getCategoryName())
                 .itemList(listItemList);
 
+        //Returning categoryDetailsResponse
         return new ResponseEntity<CategoryDetailsResponse>(categoryDetailsResponse, HttpStatus.OK);
     }
 }
